@@ -2,8 +2,8 @@
 echo "Framework: Running $0"
 
 IFS=$'\n'
-list_of_files=($(git show --name-only --pretty="" HEAD)) # JUST LAST COMMIT
-# list_of_files=($(git ls-files --full-name -z  | tr '\0' '\n')) # ALL FILES
+#list_of_files=($(git show --name-only --pretty="" HEAD)) # JUST LAST COMMIT
+list_of_files=($(git ls-files --full-name -z  | tr '\0' '\n')) # ALL FILES
 unset IFS
 
 count=0
