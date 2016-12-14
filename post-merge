@@ -1,0 +1,24 @@
+#! /bin/bash
+echo "Framework: Running $0"
+
+IFS=$'\n'
+list_of_files=($(git show --name-only --pretty="" HEAD)) # JUST LAST COMMIT
+# list_of_files=($(git ls-files --full-name -z  | tr '\0' '\n')) # ALL FILES
+unset IFS
+
+count=0
+total=${#list_of_files[@]}
+pstr="[=======================================================================]"
+
+for FILE in "${list_of_files[@]}"
+do
+	# echo $FILE
+
+	TIME=$(git log --pretty=format:%cd -n 1 --date=iso "$FILE")
+	TIME=`echo $TIME | sed 's/-//g;s/ //;s/://;s/:/\./;s/ .*//'`
+	touch -m -t $TIME "$FILE"
+
+	count=$(( $count + 1 ))
+	pd=$(( $count * 73 / $total ))
+	printf "\r%3d.%1d%% %.${pd}s" $(( $count * 100 / $total )) $(( ($count * 1000 / $total) % 10 )) $pstr
+done
